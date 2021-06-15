@@ -11,7 +11,6 @@ const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<ILogin>();
   const onSubmit: SubmitHandler<ILogin> = (data: any) =>

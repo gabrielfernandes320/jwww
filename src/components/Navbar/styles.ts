@@ -25,17 +25,12 @@ export const StyledNavbar = styled(Navbar)`
     to right,
     #6fcf97 0%,
     #6fcf97 0%,
-    #2f80ed 100%
+    #a332b3 100%
   ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6fcf97', endColorstr='#2f80ed',GradientType=1 ); /* IE6-9 */
   height: 60px;
   margin-left: -15px !important;
   margin-right: -15px !important;
-
-  a {
-    font-size: 12px;
-    font-weight: 400;
-  }
 
   .Brand {
     font-size: 22px !important;
