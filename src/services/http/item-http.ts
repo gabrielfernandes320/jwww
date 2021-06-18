@@ -1,8 +1,8 @@
-import { IWorld } from "../../interfaces/worlds/world";
+import { IItem } from "../../interfaces/items/item";
 import Request from "./request";
 
-export default class WorldHttpService {
-  private static uri = "worlds";
+export default class ItemHttpService {
+  private static uri = "items";
 
   public static index(params: {}) {
     return Request.get(this.uri, params);
@@ -12,11 +12,11 @@ export default class WorldHttpService {
     return Request.get(`${this.uri}/${id}`);
   }
 
-  public static update(data: IWorld) {
+  public static update(data: IItem) {
     return Request.patch(this.uri, data);
   }
 
-  public static insert(data: IWorld) {
+  public static insert(data: IItem) {
     return Request.post(this.uri, data);
   }
 

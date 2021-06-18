@@ -6,6 +6,11 @@ import {
   worldsListRoutePath,
   worldsDetailRoutePath,
   WorldsRoutesComponent,
+  worldsNewRoutePath,
+  itemsDetailRoutePath,
+  itemsListRoutePath,
+  ItemsRoutesComponent,
+  itemsNewRoutePath,
 } from "./config";
 
 const AppRoutes: React.FC = () => (
@@ -13,6 +18,10 @@ const AppRoutes: React.FC = () => (
     <Route path={loginRoutePath} component={AuthRoutesComponent} />
     <Route path={worldsListRoutePath} component={WorldsRoutesComponent} />
     <Route path={worldsDetailRoutePath} component={WorldsRoutesComponent} />
+    <Route path={worldsNewRoutePath} component={WorldsRoutesComponent} />
+    <Route path={itemsListRoutePath} component={ItemsRoutesComponent} />
+    <Route path={itemsDetailRoutePath} component={ItemsRoutesComponent} />
+    <Route path={itemsNewRoutePath} component={ItemsRoutesComponent} />
   </Switch>
 );
 

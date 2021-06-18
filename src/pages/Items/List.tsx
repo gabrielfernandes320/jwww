@@ -14,23 +14,20 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { ILogin } from "../../interfaces/auth/login";
 import LoginService from "../../services/login";
 import BaseLayout from "../../components/BaseLayout";
-import {
-  worldsDetailRoutePath,
-  worldsListRoutePath,
-} from "../../routes/config";
+import { itemsListRoutePath } from "../../routes/config";
 import { StyledTh } from "./styles";
 import { useQuery } from "react-query";
-import WorldHttpService from "../../services/http/world-http";
+import ItemHttpService from "../../services/http/item-http";
 import { ReactComponent as More } from "../../assets/icons/more.svg";
 import Header from "../../components/Header";
 import { toast } from "react-toastify";
 
 const List: React.FC = () => {
-  const { data, isLoading, refetch } = useQuery(["worlds"], loadWorlds);
+  const { data, isLoading, refetch } = useQuery(["Items"], loadItems);
   const history = useHistory();
 
-  async function loadWorlds() {
-    const response: any = await WorldHttpService.index({});
+  async function loadItems() {
+    const response: any = await ItemHttpService.index({});
 
     return response.data;
   }
@@ -44,7 +41,7 @@ const List: React.FC = () => {
             <Button
               className="float-right"
               onClick={() => {
-                history.push(`${worldsListRoutePath}/new`);
+                history.push(`${itemsListRoutePath}/new`);
               }}
             >
               Novo
@@ -65,7 +62,7 @@ const List: React.FC = () => {
             {isLoading ? (
               <Spinner animation={"border"} />
             ) : (
-              data.map((item: any, index: number) => (
+              data?.map((item: any, index: number) => (
                 <tr key={index}>
                   <td>{item._id}</td>
                   <td>{item.description}</td>
@@ -81,7 +78,7 @@ const List: React.FC = () => {
                       <Dropdown.Menu>
                         <Dropdown.Item
                           as={Link}
-                          to={`${worldsListRoutePath}/${item._id}/edit`}
+                          to={`${itemsListRoutePath}/${item._id}/edit`}
                         >
                           Editar
                         </Dropdown.Item>
@@ -89,7 +86,7 @@ const List: React.FC = () => {
                         <Dropdown.Item
                           onClick={async () => {
                             try {
-                              await WorldHttpService.destroy(item._id);
+                              await ItemHttpService.destroy(item._id);
                               refetch();
                             } catch (error) {
                               toast.error("Erro ao excluir");
