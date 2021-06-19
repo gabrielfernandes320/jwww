@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import { Button, ButtonGroup, Col, Form, Row } from "react-bootstrap";
+import React from "react";
+import { Button, ButtonGroup, Col, Form, Row, Spinner } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Header from "../../components/Header";
 import { IWorld } from "../../interfaces/worlds/world";
 import WorldHttpService from "../../services/http/world-http";
-import { QueryCache, useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import BaseLayout from "../../components/BaseLayout";
 import { worldsListRoutePath } from "../../routes/config";
 import { toast } from "react-toastify";
@@ -13,35 +13,63 @@ import { toast } from "react-toastify";
 const Detail: React.FC = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
-  const { data } = useQuery("world", loadWorld, {
+  useQuery("world", loadWorld, {
     enabled: !!id,
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<IWorld>();
-  const onSubmit: SubmitHandler<IWorld> = async (data: IWorld) => {
-    try {
+  const mutation = useMutation(
+    async (data: IWorld) => {
       if (data._id) {
         await WorldHttpService.update(data);
       } else {
         await WorldHttpService.insert(data);
       }
-
-      history.push(worldsListRoutePath);
-    } catch (error) {
-      toast.error("Erro ao salvar!");
+    },
+    {
+      onError: (error: any) => {
+        toast.error(error.message);
+      },
+      onSuccess: () => {
+        toast.success("Salvo com sucesso!");
+        history.push(worldsListRoutePath);
+      },
     }
+  );
+
+  // const mutation = useMutation(
+  //   async (data: IWorld) => {
+  //     if (data._id) {
+  //       await WorldHttpService.update(data);
+  //     } else {
+  //       await WorldHttpService.insert(data);
+  //     }
+  //   },
+  //   {
+  //     onError: (error: any) => {
+  //       toast.error(error.message);
+  //     },
+  //     onSuccess: () => {
+  //       toast.success("Salvo com sucesso!");
+  //       history.push(worldsListRoutePath);
+  //     },
+  //   }
+  // );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<IWorld>();
+  const onSubmit: SubmitHandler<IWorld> = async (data: IWorld) => {
+    await mutation.mutateAsync(data);
   };
 
   async function loadWorld() {
     const response: any = await WorldHttpService.show(id);
 
-    setValue("description", response.data.description);
-    setValue("_id", response.data._id);
+    reset(response.data);
+
     return response.data;
   }
 
@@ -55,7 +83,7 @@ const Detail: React.FC = () => {
         <Col className="text-right">
           <ButtonGroup className="float-right">
             <Button className="float-right" onClick={handleSubmit(onSubmit)}>
-              Salvar
+              {mutation.isLoading ? <Spinner animation={"border"} /> : "Salvar"}
             </Button>
           </ButtonGroup>
         </Col>

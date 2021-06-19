@@ -19,7 +19,7 @@ import {
   worldsListRoutePath,
 } from "../../routes/config";
 import { StyledTh } from "./styles";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import WorldHttpService from "../../services/http/world-http";
 import { ReactComponent as More } from "../../assets/icons/more.svg";
 import Header from "../../components/Header";
@@ -34,6 +34,20 @@ const List: React.FC = () => {
 
     return response.data;
   }
+
+  const mutation = useMutation(
+    async (id: number) => {
+      await WorldHttpService.destroy(id);
+    },
+    {
+      onError: (error: any) => {
+        toast.error(error.message);
+      },
+      onSuccess: () => {
+        toast.success("Excluido com sucesso!");
+      },
+    }
+  );
 
   return (
     <BaseLayout>
@@ -88,12 +102,8 @@ const List: React.FC = () => {
                         <Dropdown.Divider />
                         <Dropdown.Item
                           onClick={async () => {
-                            try {
-                              await WorldHttpService.destroy(item._id);
-                              refetch();
-                            } catch (error) {
-                              toast.error("Erro ao excluir");
-                            }
+                            await mutation.mutateAsync(item._id);
+                            refetch();
                           }}
                         >
                           Excluir

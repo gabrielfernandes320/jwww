@@ -1,20 +1,37 @@
 import React from "react";
 import { Button, Form, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ILogin } from "../../interfaces/auth/login";
 import LoginService from "../../services/login";
+import { toast } from "react-toastify";
+import { worldsListRoutePath } from "../../routes/config";
+import { useMutation } from "react-query";
 
 const Login: React.FC = () => {
-  const isLoading = false;
+  const history = useHistory();
+  const mutation = useMutation(
+    async (data: ILogin) => {
+      await LoginService.login(data);
+    },
+    {
+      onError: (error: any) => {
+        toast.error(error.message);
+      },
+      onSuccess: () => {
+        toast.success("Login realizado com sucesso!");
+        history.push(worldsListRoutePath);
+      },
+    }
+  );
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ILogin>();
-  const onSubmit: SubmitHandler<ILogin> = (data: any) =>
-    LoginService.login(data);
+  const onSubmit: SubmitHandler<ILogin> = (data: ILogin) =>
+    mutation.mutate(data);
 
   return (
     <>
@@ -63,7 +80,11 @@ const Login: React.FC = () => {
         </Form.Group>
 
         <Button className={"mt-5shadow-none"} block type="submit">
-          {isLoading ? <Spinner animation={"border"} /> : "Entrar no sistema"}
+          {mutation.isLoading ? (
+            <Spinner animation={"border"} />
+          ) : (
+            "Entrar no sistema"
+          )}
         </Button>
 
         <Button variant="outline-primary" block>
