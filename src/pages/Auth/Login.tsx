@@ -45,14 +45,14 @@ const Login: React.FC = () => {
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
-            {...register("email")}
-            name="email"
-            isInvalid={!!errors.email}
-            placeholder="Informe seu email"
+            {...register("login")}
+            name="login"
+            isInvalid={!!errors.login}
+            placeholder="Informe seu login"
           />
-          {errors.email && (
+          {errors.login && (
             <Form.Control.Feedback type="invalid">
-              {errors?.email?.message}
+              {errors?.login?.message}
             </Form.Control.Feedback>
           )}
         </Form.Group>

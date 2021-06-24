@@ -1,9 +1,9 @@
 import Request from "./request";
 
 export default class LoginHttpService {
-  public static login(email: string, password: string) {
+  public static login(login: string, password: string) {
     return Request.post("/auth/login", {
-      email,
+      login,
       password,
     });
   }

@@ -3,26 +3,26 @@ import { Button, ButtonGroup, Col, Form, Row, Spinner } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Header from "../../components/Header";
-import { IItem } from "../../interfaces/items/item";
-import ItemHttpService from "../../services/http/item-http";
+import { ICharacter } from "../../interfaces/characters/character";
+import CharacterHttpService from "../../services/http/character-http";
 import { useMutation, useQuery } from "react-query";
 import BaseLayout from "../../components/BaseLayout";
-import { itemsListRoutePath } from "../../routes/config";
+import { charactersListRoutePath } from "../../routes/config";
 import { toast } from "react-toastify";
 
 const Detail: React.FC = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
-  useQuery("item", loadItem, {
+  useQuery("character", loadCharacter, {
     enabled: !!id,
   });
 
   const mutation = useMutation(
-    async (data: IItem) => {
+    async (data: ICharacter) => {
       if (data._id) {
-        await ItemHttpService.update(data);
+        await CharacterHttpService.update(data);
       } else {
-        await ItemHttpService.insert(data);
+        await CharacterHttpService.insert(data);
       }
     },
     {
@@ -31,7 +31,7 @@ const Detail: React.FC = () => {
       },
       onSuccess: () => {
         toast.success("Salvo com sucesso!");
-        history.push(itemsListRoutePath);
+        history.push(charactersListRoutePath);
       },
     }
   );
@@ -41,15 +41,13 @@ const Detail: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IItem>();
-  const onSubmit: SubmitHandler<IItem> = async (data: IItem) => {
+  } = useForm<ICharacter>();
+  const onSubmit: SubmitHandler<ICharacter> = async (data: ICharacter) => {
     await mutation.mutateAsync(data);
   };
 
-  async function loadItem() {
-    const response: any = await ItemHttpService.show(id);
-
-    console.log(response.data);
+  async function loadCharacter() {
+    const response: any = await CharacterHttpService.show(id);
 
     reset(response.data);
 
@@ -60,8 +58,8 @@ const Detail: React.FC = () => {
     <BaseLayout>
       <Row className="header align-items-center pr-2 pl-2">
         <Header
-          title={"Items"}
-          subtitle={"Edite as informações de seu item!"}
+          title={"Mundos"}
+          subtitle={"Edite as informações de seu mundo!"}
         />
         <Col className="text-right">
           <ButtonGroup className="float-right">
@@ -76,42 +74,28 @@ const Detail: React.FC = () => {
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Descrição</Form.Label>
             <Form.Control
-              {...register("description")}
-              name="description"
-              isInvalid={!!errors.description}
+              {...register("name")}
+              name="name"
+              isInvalid={!!errors.name}
               placeholder="Informe a descrição"
             />
-            {errors.description && (
+            {errors.name && (
               <Form.Control.Feedback type="invalid">
-                {errors?.description}
+                {errors?.name?.message}
               </Form.Control.Feedback>
             )}
           </Form.Group>
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Valor</Form.Label>
+            <Form.Label>Profissao</Form.Label>
             <Form.Control
-              {...register("value")}
-              name="value"
-              isInvalid={!!errors.value}
-              placeholder="Informe o valor do item"
+              {...register("profession")}
+              name="profession"
+              isInvalid={!!errors.profession}
+              placeholder="Informe a profession"
             />
-            {errors.value && (
+            {errors.profession && (
               <Form.Control.Feedback type="invalid">
-                {errors?.value}
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Tipo</Form.Label>
-            <Form.Control
-              {...register("type")}
-              name="type"
-              isInvalid={!!errors.type}
-              placeholder="Informe o tipo do item"
-            />
-            {errors.type && (
-              <Form.Control.Feedback type="invalid">
-                {errors?.type}
+                {errors?.profession?.message}
               </Form.Control.Feedback>
             )}
           </Form.Group>

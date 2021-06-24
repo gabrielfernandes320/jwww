@@ -10,27 +10,28 @@ import {
 } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import BaseLayout from "../../components/BaseLayout";
-import { itemsListRoutePath } from "../../routes/config";
+import { charactersListRoutePath } from "../../routes/config";
 import { StyledTh } from "./styles";
 import { useMutation, useQuery } from "react-query";
-import ItemHttpService from "../../services/http/item-http";
+import CharacterHttpService from "../../services/http/character-http";
 import { ReactComponent as More } from "../../assets/icons/more.svg";
 import Header from "../../components/Header";
 import { toast } from "react-toastify";
+import { ICharacter } from "../../interfaces/characters/character";
 
 const List: React.FC = () => {
-  const { data, isLoading, refetch } = useQuery(["items"], loadWorlds);
+  const { data, isLoading, refetch } = useQuery(["characters"], loadCharacters);
   const history = useHistory();
 
-  async function loadWorlds() {
-    const response: any = await ItemHttpService.index({});
+  async function loadCharacters() {
+    const response: any = await CharacterHttpService.index({});
 
     return response.data;
   }
 
   const mutation = useMutation(
     async (id: number) => {
-      await ItemHttpService.destroy(id);
+      await CharacterHttpService.destroy(id);
     },
     {
       onError: (error: any) => {
@@ -45,13 +46,13 @@ const List: React.FC = () => {
   return (
     <BaseLayout>
       <Row className="header align-items-center pr-2 pl-2">
-        <Header title={"Items"} subtitle={"Veja seus Items!"} />
+        <Header title={"Mundos"} subtitle={"Veja seus mundos!"} />
         <Col className="text-right">
           <ButtonGroup className="float-right">
             <Button
               className="float-right"
               onClick={() => {
-                history.push(`${itemsListRoutePath}/new`);
+                history.push(`${charactersListRoutePath}/new`);
               }}
             >
               Novo
@@ -64,9 +65,8 @@ const List: React.FC = () => {
           <thead>
             <tr>
               <StyledTh>Nº</StyledTh>
-              <StyledTh>DESCRIÇÃO</StyledTh>
-              <StyledTh>VALOR</StyledTh>
-              <StyledTh>TIPO</StyledTh>
+              <StyledTh>NOME</StyledTh>
+              <StyledTh>PROFISSÂO</StyledTh>
               <StyledTh></StyledTh>
             </tr>
           </thead>
@@ -77,10 +77,8 @@ const List: React.FC = () => {
               data?.map((item: any, index: number) => (
                 <tr key={index}>
                   <td>{item._id}</td>
-                  <td>{item.description}</td>
-                  <td>{item.value}</td>
-                  <td>{item.type}</td>
-
+                  <td>{item.name}</td>
+                  <td>{item.profession}</td>
                   <td>
                     <Dropdown className={"float-right"} key="left">
                       <Dropdown.Toggle
@@ -93,7 +91,7 @@ const List: React.FC = () => {
                       <Dropdown.Menu>
                         <Dropdown.Item
                           as={Link}
-                          to={`${itemsListRoutePath}/${item._id}/edit`}
+                          to={`${charactersListRoutePath}/${item._id}/edit`}
                         >
                           Editar
                         </Dropdown.Item>

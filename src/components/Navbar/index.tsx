@@ -1,7 +1,11 @@
 import React from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { itemsListRoutePath, worldsListRoutePath } from "../../routes/config";
+import {
+  itemsListRoutePath,
+  worldsListRoutePath,
+  charactersListRoutePath,
+} from "../../routes/config";
 import { StyledNavbar } from "./styles";
 
 const NavbarHeader: React.FC = () => {
@@ -17,6 +21,9 @@ const NavbarHeader: React.FC = () => {
             </Nav.Link>
             <Nav.Link as={Link} to={itemsListRoutePath} href="#worlds">
               Itens
+            </Nav.Link>
+            <Nav.Link as={Link} to={charactersListRoutePath} href="#characters">
+              Personagens
             </Nav.Link>
             {/* <Nav.Link href="#characters">Personagens</Nav.Link>
             <Nav.Link href="#items">Itens</Nav.Link> */}

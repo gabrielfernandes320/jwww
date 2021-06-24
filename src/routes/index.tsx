@@ -11,6 +11,10 @@ import {
   itemsListRoutePath,
   ItemsRoutesComponent,
   itemsNewRoutePath,
+  CharactersRoutesComponent,
+  charactersListRoutePath,
+  charactersDetailRoutePath,
+  charactersNewRoutePath,
 } from "./config";
 
 const AppRoutes: React.FC = () => (
@@ -22,6 +26,18 @@ const AppRoutes: React.FC = () => (
     <Route path={itemsListRoutePath} component={ItemsRoutesComponent} />
     <Route path={itemsDetailRoutePath} component={ItemsRoutesComponent} />
     <Route path={itemsNewRoutePath} component={ItemsRoutesComponent} />
+    <Route
+      path={charactersListRoutePath}
+      component={CharactersRoutesComponent}
+    />
+    <Route
+      path={charactersDetailRoutePath}
+      component={CharactersRoutesComponent}
+    />
+    <Route
+      path={charactersNewRoutePath}
+      component={CharactersRoutesComponent}
+    />
   </Switch>
 );
 

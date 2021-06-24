@@ -3,11 +3,12 @@ import { signInRoutePath } from "../routes/config";
 import LoginHttpService from "./http/login-http";
 import history from "./history";
 import { toast } from "react-toastify";
+import Request from "./http/request";
 
 export default class LoginService {
   public static async login(login: ILogin) {
     const loginResponse = await LoginHttpService.login(
-      login.email,
+      login.login,
       login.password
     );
     const data = loginResponse.data;
@@ -19,6 +20,7 @@ export default class LoginService {
       toast.error("Ocorreu um problema ao fazer o login");
     }
 
+    Request.setHeader("Authorization", data);
     localStorage.setItem("token", data);
   }
 

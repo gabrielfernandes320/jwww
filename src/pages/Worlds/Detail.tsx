@@ -36,25 +36,6 @@ const Detail: React.FC = () => {
     }
   );
 
-  // const mutation = useMutation(
-  //   async (data: IWorld) => {
-  //     if (data._id) {
-  //       await WorldHttpService.update(data);
-  //     } else {
-  //       await WorldHttpService.insert(data);
-  //     }
-  //   },
-  //   {
-  //     onError: (error: any) => {
-  //       toast.error(error.message);
-  //     },
-  //     onSuccess: () => {
-  //       toast.success("Salvo com sucesso!");
-  //       history.push(worldsListRoutePath);
-  //     },
-  //   }
-  // );
-
   const {
     register,
     handleSubmit,

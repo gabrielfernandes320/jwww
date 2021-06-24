@@ -79,7 +79,7 @@ const List: React.FC = () => {
             {isLoading ? (
               <Spinner animation={"border"} />
             ) : (
-              data.map((item: any, index: number) => (
+              data?.map((item: any, index: number) => (
                 <tr key={index}>
                   <td>{item._id}</td>
                   <td>{item.description}</td>

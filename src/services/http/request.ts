@@ -140,7 +140,7 @@ class Request {
     return {
       responseType: "json",
       headers: {
-        Authorization: api.defaults.headers.Authorization,
+        Authorization: `Bearer ${api.defaults.headers.Authorization}`,
         "Content-Type": "application/json",
       },
       ...config,
