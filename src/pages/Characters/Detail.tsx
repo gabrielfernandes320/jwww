@@ -74,7 +74,7 @@ const Detail: React.FC = () => {
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Descrição</Form.Label>
             <Form.Control
-              {...register("name")}
+              {...(register("name"), { required: true })}
               name="name"
               isInvalid={!!errors.name}
               placeholder="Informe a descrição"
@@ -88,7 +88,7 @@ const Detail: React.FC = () => {
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Profissao</Form.Label>
             <Form.Control
-              {...register("profession")}
+              {...(register("profession"), { required: true })}
               name="profession"
               isInvalid={!!errors.profession}
               placeholder="Informe a profession"
